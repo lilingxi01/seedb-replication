@@ -1,5 +1,7 @@
-Raw Data:
-39(age), State-gov(workclass), 
+Raw Data_value(Field) : 
+
+39(age), 
+State-gov(workclass), 
 77516(fnlwgt), 
 Bachelors(education), 
 13(education-num), 
@@ -14,9 +16,10 @@ Male(sex),
 United-States(native-country), 
 <=50K(income)
 
+
 Processed data
-1. Change the Marital-status in the original data to unify it into married and unmarried statuses (save in pro_adult_data.data)
-2. Import the pro.data to create a new table, naming it adult_data
+1. clean data and Change the Marital-status in the original data to unify it into married and unmarried statuses (save in pro_adult_data.data)
+2. Create a new table named adult_data and then use the COPY command to import the pro_adult_data.data into PostgreSQL
 3. Filter the data again based on the married and unmarried statuses, creating two new tables accordingly. (one is married_data, the other is unmarried_data)
 
 If you need to use this data in a local database, simply create the adult_data table and import the pro_adult_data.data file. Then, follow the steps outlined in the CreateDataBase.sql file to filter and create the other two tables.
