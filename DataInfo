@@ -1,0 +1,22 @@
+Raw Data:
+39(age), State-gov(workclass), 
+77516(fnlwgt), 
+Bachelors(education), 
+13(education-num), 
+Never-married(marital-status), 
+Adm-clerical(occupation), 
+Not-in-family(relationship),
+White(race),
+Male(sex),
+2174(capital-gain), 
+0(capital-loss), 
+40(hours-per-week), 
+United-States(native-country), 
+<=50K(income)
+
+Processed data
+1. Change the Marital-status in the original data to unify it into married and unmarried statuses (save in pro_adult_data.data)
+2. Import the pro.data to create a new table, naming it adult_data
+3. Filter the data again based on the married and unmarried statuses, creating two new tables accordingly. (one is married_data, the other is unmarried_data)
+
+If you need to use this data in a local database, simply create the adult_data table and import the pro_adult_data.data file. Then, follow the steps outlined in the CreateDataBase.sql file to filter and create the other two tables.
