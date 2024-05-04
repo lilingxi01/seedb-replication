@@ -16,7 +16,7 @@ CREATE TABLE adult_data (
     income VARCHAR(255)
 );
 
-//Change the local location of your data file.   eg: 'D:\course\645\project\pro_adult_data.data'
+//Change the local location of your pro_adult_data.data file.   eg: 'D:\course\645\project\pro_adult_data.data'
 COPY adult_data FROM '*/pro_adult_data.data' WITH (FORMAT csv);
 
 select * from adult_data limit 10
