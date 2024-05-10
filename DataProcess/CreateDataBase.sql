@@ -16,21 +16,21 @@ CREATE TABLE adult_data (
     income VARCHAR(255)
 );
 
-//Change the local location of your pro_adult_data.data file.   eg: 'D:\course\645\project\pro_adult_data.data'
-COPY adult_data FROM '*/pro_adult_data.data' WITH (FORMAT csv);
+-- Change the local location of your pro_adult_data.data file.   eg: 'D:\course\645\project\pro_adult_data.data'
+COPY adult_data FROM '/Users/jocelyn/Desktop/seedb-replication/DataProcess/pro_adult_data.data' WITH (FORMAT csv);
 
-select * from adult_data limit 10
+-- select * from adult_data limit 10
 
 CREATE TABLE married_data AS 
 SELECT age, workclass, fnlwgt, education, education_num, occupation, relationship, race, sex, capital_gain, capital_loss, hours_per_week, native_country, income
 FROM adult_data
 WHERE marital_status = 'Married';
 
-select * from married_data limit 10
+-- select * from married_data limit 10
 
 CREATE TABLE unmarried_data AS 
 SELECT age, workclass, fnlwgt, education, education_num, occupation, relationship, race, sex, capital_gain, capital_loss, hours_per_week, native_country, income
 FROM adult_data
 WHERE marital_status = 'Unmarried';
 
-select * from unmarried_data limit 10
+-- select * from unmarried_data limit 10
