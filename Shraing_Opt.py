@@ -1,31 +1,12 @@
 import re
+from collections import defaultdict
 
-function_lst = ['SUM', 'COUNT', 'AVG']
+function_lst = ['SUM', 'COUNT', 'AVG', 'MAX', 'MIN']
 
 select_pattern = r"SELECT\s+(.*?)\s+FROM"
 from_pattern = r"FROM\s+(.*?)(?:\s+WHERE|\s+GROUP\s+BY|$)"
 where_pattern = r"WHERE\s+(.*?)(?:\s+GROUP\s+BY|$)"
 group_by_pattern = r"GROUP\s+BY\s+(.*)"
-
-
-def parseFunction(select_items):
-    components = select_items.split(',')
-    attribute, measure, function = None, None, None
-
-    for component in components:
-        component = component.strip()
-        for func in function_lst:
-            if func in component:
-                function = func
-                function_pattern = rf"{func}\((.*?)\)"
-                measure_match = re.search(function_pattern, component)
-                if measure_match:
-                    measure = measure_match.group(1)
-                break
-        else:
-            attribute = component
-
-    return attribute, function, measure
 
 
 def parseQuery(query):
@@ -42,10 +23,40 @@ def parseQuery(query):
     return select_items, from_items, where_items, group_by_items
 
 
-# def combineMultipleAggregates(dimension_lst, function_lst, measure_lst):
+def parseSelectItems(select_items):
+    components = select_items.split(',')
+    attribute = None
+    measures, functions = [], []
 
-# Q2 = 'SELECT a, SUM(m) FROM D GROUP BY a'
-# select_items, from_items, where_items, group_by_items = parseQuery(Q2)
-# print(select_items)
-# print(parseFunction(select_items))
-# # print(parseQuery(Q2))
+    for component in components:
+        component = component.strip()
+        for func in function_lst:
+            if func in component:
+                measure_match = re.search(rf"{func}\((.*?)\)", component)
+                if measure_match:
+                    measure = measure_match.group(1)
+                    measures.append(measure)
+                    functions.append(func)
+                break
+        else:
+            attribute = component
+
+    return attribute, measures, functions
+
+
+def combineAggregates(queries):
+    grouped_aggregates_dict = defaultdict(lambda: {'measures': [], 'functions': []})
+
+    for query in queries:
+        select_items = parseQuery(query)[0]
+        attribute, measures, functions = parseSelectItems(select_items)
+        grouped_aggregates_dict[attribute]['measures'].extend(measures)
+        grouped_aggregates_dict[attribute]['functions'].extend(functions)
+
+    return grouped_aggregates_dict
+
+
+
+# Q2 = 'SELECT a, SUM(m1) FROM D GROUP BY a'
+# Q3 = 'SELECT a, COUNT(m2) FROM D GROUP BY a'
+# print(combineAggregates([Q2, Q3]))
