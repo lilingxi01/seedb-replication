@@ -30,9 +30,10 @@ def parseSelectItems(select_items):
 
     for component in components:
         component = component.strip()
+        component_upper = component.upper()
         for func in function_lst:
-            if func in component:
-                measure_match = re.search(rf"{func}\((.*?)\)", component)
+            if func.upper() in component_upper:
+                measure_match = re.search(rf"{func}\((.*?)\)", component, re.IGNORECASE)
                 if measure_match:
                     measure = measure_match.group(1)
                     measures.append(measure)
