@@ -75,9 +75,11 @@ def combineAggregates(queries):
 
 # Example usage
 queries = [
-    'SELECT a, SUM(m1) FROM D WHERE a > 10 GROUP BY a',
-    'SELECT a, COUNT(m2) FROM D WHERE a > 10 GROUP BY a',
-    'SELECT b, AVG(m3) FROM D WHERE b < 5 GROUP BY b'
+'SELECT workclass, COUNT(age) AS count_age FROM married_data WHERE workclass IS NOT NULL GROUP BY workclass',
+'SELECT workclass, MAX(age) AS max_age FROM married_data WHERE workclass IS NOT NULL GROUP BY workclass',
+'SELECT workclass, min(age) AS min_age FROM married_data WHERE workclass IS NOT NULL GROUP BY workclass',
+'SELECT workclass, sum(age) AS sum_age FROM married_data WHERE workclass IS NOT NULL GROUP BY workclass',
+'SELECT workclass, AvG(age) AS avg_age FROM married_data WHERE workclass IS NOT NULL GROUP BY workclass'
 ]
 
 combined_queries = combineAggregates(queries)
