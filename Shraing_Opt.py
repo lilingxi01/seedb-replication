@@ -30,9 +30,10 @@ def parseSelectItems(select_items):
 
     for component in components:
         component = component.strip()
+        component_upper = component.upper()
         for func in function_lst:
-            if func in component:
-                measure_match = re.search(rf"{func}\((.*?)\)", component)
+            if func.upper() in component_upper:
+                measure_match = re.search(rf"{func}\((.*?)\)", component, re.IGNORECASE)
                 if measure_match:
                     measure = measure_match.group(1)
                     measures.append(measure)
@@ -45,18 +46,42 @@ def parseSelectItems(select_items):
 
 
 def combineAggregates(queries):
-    grouped_aggregates_dict = defaultdict(lambda: {'measures': [], 'functions': []})
-
+    # Group queries by FROM and WHERE clauses for potential combination
+    query_groups = defaultdict(list)
     for query in queries:
-        select_items = parseQuery(query)[0]
+        select_items, from_clause, where_clause, group_by_items = parseQuery(query)
         attribute, measures, functions = parseSelectItems(select_items)
-        grouped_aggregates_dict[attribute]['measures'].extend(measures)
-        grouped_aggregates_dict[attribute]['functions'].extend(functions)
+        key = (from_clause, where_clause)
+        query_groups[key].append((group_by_items, measures, functions, attribute))
 
-    return grouped_aggregates_dict
+    combined_queries = []
+    for (from_clause, where_clause), group in query_groups.items():
+        combined_by_group = defaultdict(list)
+        for group_by_items, measures, functions, attribute in group:
+            combined_by_group[group_by_items].append((measures, functions, attribute))
 
+        for group_by_items, details in combined_by_group.items():
+            select_parts = []
+            for measures, functions, attribute in details:
+                for measure, function in zip(measures, functions):
+                    select_parts.append(f"{function}({measure}) AS {function}_{measure}")
+            select_clause = ', '.join(select_parts)
+            where_clause = f"WHERE {where_clause}" if where_clause else ""
+            group_by_clause = f"GROUP BY {group_by_items}" if group_by_items else ""
+            query = f"SELECT {group_by_items}, {select_clause} FROM {from_clause} {where_clause} {group_by_clause};"
+            combined_queries.append(query)
 
+    return combined_queries
 
-# Q2 = 'SELECT a, SUM(m1) FROM D GROUP BY a'
-# Q3 = 'SELECT a, COUNT(m2) FROM D GROUP BY a'
-# print(combineAggregates([Q2, Q3]))
+# Example usage
+queries = [
+'SELECT workclass, COUNT(age) AS count_age FROM married_data WHERE workclass IS NOT NULL GROUP BY workclass',
+'SELECT workclass, MAX(age) AS max_age FROM married_data WHERE workclass IS NOT NULL GROUP BY workclass',
+'SELECT workclass, min(age) AS min_age FROM married_data WHERE workclass IS NOT NULL GROUP BY workclass',
+'SELECT workclass, sum(age) AS sum_age FROM married_data WHERE workclass IS NOT NULL GROUP BY workclass',
+'SELECT workclass, AvG(age) AS avg_age FROM married_data WHERE workclass IS NOT NULL GROUP BY workclass'
+]
+
+combined_queries = combineAggregates(queries)
+for query in combined_queries:
+    print(query)
