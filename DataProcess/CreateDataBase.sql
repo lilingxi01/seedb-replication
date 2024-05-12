@@ -34,3 +34,26 @@ FROM adult_data
 WHERE marital_status = 'Unmarried';
 
 -- select * from unmarried_data limit 10
+
+
+-- Create a different partion
+CREATE TABLE adult_data_partitioned (
+    age INT,
+    workclass VARCHAR(255),
+    fnlwgt INT,
+    education VARCHAR(255),
+    education_num INT,
+    marital_status VARCHAR(255),
+    occupation VARCHAR(255),
+    relationship VARCHAR(255),
+    race VARCHAR(255),
+    sex VARCHAR(255),
+    capital_gain INT,
+    capital_loss INT,
+    hours_per_week INT,
+    native_country VARCHAR(255),
+    income VARCHAR(255),
+    partition_id INT
+);
+
+COPY adult_data FROM '.../par_adult_data.data' WITH (FORMAT csv);
