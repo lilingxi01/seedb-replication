@@ -40,6 +40,7 @@ def confidence_interval_pruning(views: list[np.ndarray], k: int):
     for view in views:
         N = len(view)
         m = N // 2  # For now, we always let m = floor(N/2). This can be changed.
+        # TODO: This mean needs to be sampled instead of actual mean.
         mu = np.mean(view)
         epsilon = epsilon_m(m, N)
         upper_bound = mu + epsilon
