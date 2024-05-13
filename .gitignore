@@ -1,0 +1,17 @@
+.DS_Store
+
+.nova/
+.idea/
+.vscode/
+.fleet/
+
+__pycache__/
+.ipynb_checkpoints/
+.pytest_cache/
+
+dist/
+
+.env
+.env.*
+
+docs/build/
