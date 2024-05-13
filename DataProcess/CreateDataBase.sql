@@ -55,5 +55,6 @@ CREATE TABLE adult_data_partitioned (
     income VARCHAR(255),
     partition_id INT
 );
-
+CREATE INDEX partition_id_index ON adult_data_partitioned (partition_id);
 COPY adult_data FROM '.../par_adult_data.data' WITH (FORMAT csv);
+
