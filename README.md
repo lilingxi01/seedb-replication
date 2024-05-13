@@ -1,10 +1,12 @@
 # SeeDB Replication
 
+This repository contains the replication implementation of the SeeDB project. The project aims to replicate the SeeDB system and evaluate the optimization strategies proposed in the original paper. [The original paper](https://www.semanticscholar.org/paper/SeeDB%3A-Efficient-Data-Driven-Visualization-to-Vartak-Rahman/265c244dbb7afffab62afc67f8a85ebda0213299) is titled "SeeDB: Efficient Data-Driven Visualization Recommendations to Support Visual Analytics" by Vartak et al. (2015).
+
 ## Database Setup
 
 ### 1. Create Database
 
-Connect to your database through `psql` command-line tool or any other tool of your choice. Then, create a database named `census_income`: 
+Connect to your database through `psql` command-line tool or any other tool of your choice. Then, create a database named `census_income`:
 
 ```sql
 CREATE DATABASE census_income;
